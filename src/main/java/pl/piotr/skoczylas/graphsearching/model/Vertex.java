@@ -1,19 +1,16 @@
 package pl.piotr.skoczylas.graphsearching.model;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Vertex {
     private List<Vertex> edgeList;
     private Set<Vertex> edgeSet;
     private int number;
 
-    Vertex(int number, List<Vertex> edgeList, Set<Vertex> edgeSet) {
+    public Vertex(int number, List<Vertex> edgeList) {
         this.number = number;
         this.edgeList = createEdgeList(edgeList);
-        this.edgeSet = createEdgeSet(edgeSet);
+        this.edgeSet = createEdgeSet();
         this.edgeSet = edgeSet;
     }
 
@@ -24,11 +21,13 @@ public class Vertex {
         return new ArrayList<>();
     }
 
-    private Set<Vertex> createEdgeSet(Set<Vertex> edgeSet) {
-        if (edgeSet != null) {
+    private Set<Vertex> createEdgeSet() {
+        Set<Vertex> edgeSet = new HashSet<>();
+        if (edgeList == null) {
             return edgeSet;
         }
-        return new HashSet<>();
+        edgeSet.addAll(edgeList);
+        return edgeSet;
     }
 
     public boolean createConnection(Vertex neighbourhood) {
@@ -43,5 +42,9 @@ public class Vertex {
 
     public int getNumber() {
         return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 }
