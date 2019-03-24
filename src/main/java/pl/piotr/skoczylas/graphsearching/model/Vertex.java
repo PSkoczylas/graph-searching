@@ -1,17 +1,29 @@
 package pl.piotr.skoczylas.graphsearching.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.*;
 
+@Getter
+@Setter
 public class Vertex {
     private List<Vertex> edgeList;
     private Set<Vertex> edgeSet;
     private int number;
+    private int timeIn;
+    private int timeOut;
+    private boolean visited;
+    private char color;
 
     public Vertex(int number, List<Vertex> edgeList) {
         this.number = number;
         this.edgeList = createEdgeList(edgeList);
         this.edgeSet = createEdgeSet();
-        this.edgeSet = edgeSet;
+        this.edgeSet = new HashSet<>();
+        this.visited = false;
+        this.timeIn = this.timeOut = -1;
+        this.color = 'w';
     }
 
     private List<Vertex> createEdgeList(List<Vertex> edgeList) {
@@ -30,7 +42,7 @@ public class Vertex {
         return edgeSet;
     }
 
-    public boolean createConnection(Vertex neighbourhood) {
+    boolean createConnection(Vertex neighbourhood) {
         if (edgeSet.contains(neighbourhood)) {
             return false;
         }
@@ -40,11 +52,7 @@ public class Vertex {
         return true;
     }
 
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
+    void printEdges() {
+        edgeList.forEach(e -> System.out.print(e.getNumber() + ", "));
     }
 }
