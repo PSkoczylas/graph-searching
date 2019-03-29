@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class Graph {
     private List<Vertex> vertexList;
     private Set<Vertex> vertexSet;
-    private boolean directed;
+    private Boolean directed;
 
     public Graph(int vertexNumber, boolean directed) {
         this.vertexList = new ArrayList<>();
@@ -59,7 +59,7 @@ public class Graph {
             return false;
         }
 
-        if (!isDirected()) {
+        if (!getDirected()) {
             v2.createConnection(v1);
         }
 
@@ -76,5 +76,10 @@ public class Graph {
             vertex.printEdges();
             System.out.println();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Graph:\n" + vertexList.stream().map(Vertex::toString).collect(Collectors.joining("\n"));
     }
 }

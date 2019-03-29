@@ -4,13 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
 public class Vertex {
     private List<Vertex> edgeList;
     private Set<Vertex> edgeSet;
-    private int number;
+    private Integer number;
     private int timeIn;
     private int timeOut;
     private boolean visited;
@@ -54,5 +55,12 @@ public class Vertex {
 
     void printEdges() {
         edgeList.forEach(e -> System.out.print(e.getNumber() + ", "));
+    }
+
+    @Override
+    public String toString() {
+        return this.number + "-" + edgeList.stream()
+                .map(v -> v.getNumber().toString())
+                .collect(Collectors.joining("-"));
     }
 }

@@ -32,7 +32,12 @@ public class Main {
         g.addEdge(9, 4);
         g.addEdge(9, 5);
         g.addEdge(5, 6);
+        g.addEdge(2, 6);
+        g.addEdge(10, 4);
+        g.addEdge(4, 1);
         Dfs dfs = new Dfs();
-        dfs.searchGraph(g);
+        Graph tree = dfs.searchGraph(g);
+        System.out.println(g);
+        System.out.println(tree);
     }
 }
