@@ -2,6 +2,7 @@ package pl.piotr.skoczylas.graphsearching;
 
 import pl.piotr.skoczylas.graphsearching.model.Graph;
 import pl.piotr.skoczylas.graphsearching.model.Vertex;
+import pl.piotr.skoczylas.graphsearching.service.Bfs;
 import pl.piotr.skoczylas.graphsearching.service.Dfs;
 
 import java.util.ArrayList;
@@ -35,8 +36,8 @@ public class Main {
         g.addEdge(2, 6);
         g.addEdge(10, 4);
         g.addEdge(4, 1);
-        Dfs dfs = new Dfs();
-        Graph tree = dfs.searchGraph(g);
+        Bfs bfs = new Bfs();
+        Graph tree = bfs.searchGraph(g, g.getVertex(1));
         System.out.println(g);
         System.out.println(tree);
     }

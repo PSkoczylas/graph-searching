@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 public class Vertex {
     private List<Vertex> edgeList;
     private Set<Vertex> edgeSet;
+    private Integer distance;
     private Integer number;
     private int timeIn;
     private int timeOut;
@@ -25,6 +26,7 @@ public class Vertex {
         this.visited = false;
         this.timeIn = this.timeOut = -1;
         this.color = 'w';
+        this.distance = Integer.MAX_VALUE;
     }
 
     private List<Vertex> createEdgeList(List<Vertex> edgeList) {
