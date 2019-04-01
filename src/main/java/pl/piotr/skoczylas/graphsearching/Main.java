@@ -6,6 +6,7 @@ import pl.piotr.skoczylas.graphsearching.model.Graph;
 import pl.piotr.skoczylas.graphsearching.model.Vertex;
 import pl.piotr.skoczylas.graphsearching.service.Bfs;
 import pl.piotr.skoczylas.graphsearching.service.Dfs;
+import pl.piotr.skoczylas.graphsearching.service.ReadFromFile;
 import pl.piotr.skoczylas.graphsearching.service.TopologicalSort;
 import pl.piotr.skoczylas.graphsearching.view.BeginElement;
 
@@ -16,7 +17,14 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         //BeginElement.starter();
-        //Graph g = new Graph();
+        ReadFromFile readFromFile = new ReadFromFile();
+        Graph g = readFromFile.getGraphFromFile();
+        System.out.println(g);
+
+        //BeginElement beginElement = new BeginElement();
+    }
+
+    public static void checkGraph() {
         Graph g = new Graph(10, true);
         g.addEdge(1, 8);
         g.addEdge(8, 10);
@@ -35,6 +43,5 @@ public class Main {
         LinkedList<Vertex> topological = topologicalSort.getTopologicalList(g);
         System.out.println(g);
         System.out.println(topological);
-        //BeginElement beginElement = new BeginElement();
     }
 }
