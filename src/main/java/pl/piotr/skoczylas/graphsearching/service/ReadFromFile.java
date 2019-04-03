@@ -13,14 +13,8 @@ public class ReadFromFile {
             if (scanner.hasNextInt()) {
                 int vertexNumber = scanner.nextInt();
                 if (scanner.hasNextInt()) {
-                    boolean directed;
                     int checkDirected = scanner.nextInt();
-                    if (checkDirected == 0) {
-                        directed = false;
-                    } else {
-                        directed = true;
-                    }
-
+                    boolean directed = checkDirected != 0;
                     Graph graph = new Graph(vertexNumber, directed);
 
                     while (scanner.hasNextInt()) {
@@ -30,9 +24,7 @@ public class ReadFromFile {
                     return graph;
                 }
             }
-        } catch (FileNotFoundException f) {
-
-        }
+        } catch (FileNotFoundException f) {}
         return null;
     }
 }

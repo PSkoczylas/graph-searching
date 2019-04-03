@@ -61,8 +61,8 @@ public class Vertex {
 
     @Override
     public String toString() {
-        return this.number + "-" + edgeList.stream()
+        return this.number + ": " + edgeList.stream()
                 .map(v -> v.getNumber().toString())
-                .collect(Collectors.joining("-"));
+                .collect(Collectors.joining(", "));
     }
 }
