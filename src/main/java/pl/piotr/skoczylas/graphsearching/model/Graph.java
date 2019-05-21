@@ -80,6 +80,6 @@ public class Graph {
 
     @Override
     public String toString() {
-        return "Graph:\n" + vertexList.stream().map(Vertex::toString).collect(Collectors.joining("\n"));
+        return vertexList.stream().map(Vertex::toString).collect(Collectors.joining("\n"));
     }
 }

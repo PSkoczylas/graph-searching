@@ -1,27 +1,23 @@
 package pl.piotr.skoczylas.graphsearching;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
 import pl.piotr.skoczylas.graphsearching.model.Graph;
 import pl.piotr.skoczylas.graphsearching.model.Vertex;
 import pl.piotr.skoczylas.graphsearching.service.Bfs;
-import pl.piotr.skoczylas.graphsearching.service.Dfs;
-import pl.piotr.skoczylas.graphsearching.service.ReadFromFile;
 import pl.piotr.skoczylas.graphsearching.service.TopologicalSort;
-import pl.piotr.skoczylas.graphsearching.view.BeginElement;
+import pl.piotr.skoczylas.graphsearching.view.MainView;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        //BeginElement.starter();
+        MainView mainPage = new MainView();
+        mainPage.startApplication();
+        //MainView.starter();
         //ReadFromFile readFromFile = new ReadFromFile();
         //Graph g = readFromFile.getGraphFromFile();
         //System.out.println(g);
-        dfs();
-        //BeginElement beginElement = new BeginElement();
+        //dfs();
+        //MainView beginElement = new MainView();
     }
 
     public static void checkGraph() {
@@ -63,7 +59,7 @@ public class Main {
         Bfs bfs = new Bfs();
         System.out.println(g);
         Graph bfsTree = bfs.searchGraph(g, g.getVertex(1));
-        g.getVertexList().forEach(v -> System.out.println(v.getDistance()));
-        System.out.println(bfsTree);
+        //g.getVertexList().forEach(v -> System.out.println(v.getDistance()));
+        //System.out.println(bfsTree);
     }
 }
