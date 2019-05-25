@@ -70,6 +70,22 @@ public class Graph {
         return addEdge(vertexList.get(v1 - 1), vertexList.get(v2 - 1));
     }
 
+    public boolean removeEdge(Vertex v1, Vertex v2) {
+        if (!v1.removeConnection(v2)) {
+            return false;
+        }
+
+        if (!getDirected()) {
+            v2.removeConnection(v1);
+        }
+
+        return true;
+    }
+
+    public boolean removeEdge(int v1, int v2) {
+        return removeEdge(vertexList.get(v1 - 1), vertexList.get(v2 - 1));
+    }
+
     public void printGraph() {
         for (Vertex vertex: this.vertexList) {
             System.out.print(vertex.getNumber() + ": ");

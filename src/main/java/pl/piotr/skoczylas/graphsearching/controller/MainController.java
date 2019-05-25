@@ -3,13 +3,16 @@ package pl.piotr.skoczylas.graphsearching.controller;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import pl.piotr.skoczylas.graphsearching.model.Graph;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import pl.piotr.skoczylas.graphsearching.service.Bfs;
-import pl.piotr.skoczylas.graphsearching.service.Dfs;
-import pl.piotr.skoczylas.graphsearching.service.TopologicalSort;
+import pl.piotr.skoczylas.graphsearching.service.*;
+import pl.piotr.skoczylas.graphsearching.view.MainView;
 
 public class MainController {
     private Graph graph;
@@ -48,7 +51,20 @@ public class MainController {
         }
 
         showGraphText.setText(showText + graph.toString());
+    }
 
+    @FXML
+    void removeEdge(ActionEvent event) {
+        String showText;
+        try {
+            graph.removeEdge(Integer.parseInt(vertexForEdge1.getText()),
+                    Integer.parseInt(vertexForEdge2.getText()));
+            showText = "Poprawnie usunięto krawędź.\nStan grafu:\n";
+        } catch(Exception e) {
+            showText = "Wprowadzono niepoprawne dane\n";
+        }
+
+        showGraphText.setText(showText + graph.toString());
     }
 
     @FXML
@@ -99,6 +115,41 @@ public class MainController {
             }
         } catch (Exception e) {
             showGraphText.setText("Najpierw wprowadź graf\n");
+        }
+    }
+
+    @FXML
+    private AnchorPane mainWindow;
+
+    @FXML
+    void loadGraphFromFile(ActionEvent event) {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Wybierz plik z grafem");
+            Stage stage = (Stage) mainWindow.getScene().getWindow();
+            ReadFromFile readFromFile = new ReadFromFile();
+            graph = readFromFile.getGraphFromFile(fileChooser.showOpenDialog(stage));
+            showGraphText.setText("Poprawnie wczytano graf z pliku\nStan grafu:\n" + graph.toString());
+        } catch(Exception e) {
+            showGraphText.setText("Nie wczytano pliku lub format jest niepoprawny\n");
+        }
+    }
+
+    @FXML
+    void saveGraphToFile(ActionEvent event) {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Wybierz plik do zapisania grafu");
+            Stage stage = (Stage) mainWindow.getScene().getWindow();
+            WriteToFile writeToFile = new WriteToFile();
+            writeToFile.saveGraphToFile(fileChooser.showOpenDialog(stage), graph);
+            showGraphText.setText("Poprawnie zapisano graf do pliku\nStan grafu:\n" + graph.toString());
+        } catch(Exception e) {
+            if (graph == null) {
+                showGraphText.setText("Nie wprowadzono grafu\n");
+            } else {
+                showGraphText.setText("Nie wczytano pliku lub format jest niepoprawny\n");
+            }
         }
     }
 

@@ -7,9 +7,9 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class ReadFromFile {
-    public Graph getGraphFromFile()  {
+    public Graph getGraphFromFile(File file)  {
         try {
-            Scanner scanner = new Scanner(new File("graph.txt"));
+            Scanner scanner = new Scanner(file);
             if (scanner.hasNextInt()) {
                 int vertexNumber = scanner.nextInt();
                 if (scanner.hasNextInt()) {
@@ -17,14 +17,18 @@ public class ReadFromFile {
                     boolean directed = checkDirected != 0;
                     Graph graph = new Graph(vertexNumber, directed);
 
-                    while (scanner.hasNextInt()) {
-                        graph.addEdge(scanner.nextInt(), scanner.nextInt());
+                    while (scanner.hasNextLine()) {
+                        String line = scanner.nextLine();
+                        String[] vertexes = line.split(" ");
+                        for (int i = 1; i < vertexes.length; i++) {
+                            graph.addEdge(Integer.parseInt(vertexes[0]), Integer.parseInt(vertexes[i]));
+                        }
                     }
 
                     return graph;
                 }
             }
-        } catch (FileNotFoundException f) {}
+        } catch (Exception e) {}
         return null;
     }
 }

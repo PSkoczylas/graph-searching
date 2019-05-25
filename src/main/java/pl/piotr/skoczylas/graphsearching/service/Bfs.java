@@ -44,14 +44,15 @@ public class Bfs {
     }
 
     public String toString() {
-        return "Przebieg przeszukiwania wszerz:\n" +
-                vertexDistanceList.stream().map(this::printVertexInformation).collect(Collectors.joining("\n"))
+        return "Przebieg przeszukiwania wszerz.\n" +
+                "\nKolejność odwiedzonych wierzchołków (w nawiasie odledłość od źródła):\n" +
+                vertexDistanceList.stream().map(this::printVertexInformation).collect(Collectors.joining(" -> "))
                 + "\n\nDrzewo przeszukiwania wszerz:\n" + bfsTree.toString()
-                + "\nPrzeszukwany graf:\n" + graph.toString();
+                + "\n\nPrzeszukwany graf:\n" + graph.toString();
     }
 
     private String printVertexInformation(Vertex vertex) {
-        return "Odwiedzam wierzchołek numer " + vertex.getNumber() +
-                "\nOdległość od źródła: " + vertex.getDistance();
+        return vertex.getNumber() + " (" + vertex.getDistance() + ")";
     }
+
 }

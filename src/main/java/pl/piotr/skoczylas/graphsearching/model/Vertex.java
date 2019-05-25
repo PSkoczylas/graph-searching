@@ -55,6 +55,16 @@ public class Vertex {
         return true;
     }
 
+    boolean removeConnection(Vertex neighbourhood) {
+        if (edgeSet.contains(neighbourhood)) {
+            edgeSet.remove(neighbourhood);
+            edgeList.remove(neighbourhood);
+            return true;
+        }
+
+        return false;
+    }
+
     void printEdges() {
         edgeList.forEach(e -> System.out.print(e.getNumber() + ", "));
     }

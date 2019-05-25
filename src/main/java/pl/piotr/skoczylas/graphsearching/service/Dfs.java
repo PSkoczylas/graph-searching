@@ -11,12 +11,12 @@ public class Dfs {
     private Graph dfsTree;
     protected int time;
     public boolean hasCycle;
-    private List<Vertex> vertexTimeList;
+    private List<Vertex> timeInList = new LinkedList<>();
+    private List<Vertex> timeOutList = new LinkedList<>();
     protected Graph graph;
 
     public Graph searchGraph(Graph graph) {
         this.graph = graph;
-        vertexTimeList = new LinkedList<>();
         hasCycle = false;
         dfsTree = new Graph(graph.getVertexList().size(), graph.getDirected());
         graph.getVertexList().forEach(v -> v.setColor('w'));
@@ -34,7 +34,7 @@ public class Dfs {
         time++;
         vertex.setTimeIn(time);
         vertex.setColor('g');
-        vertexTimeList.add(vertex);
+        timeInList.add(vertex);
         for (Vertex v: vertex.getEdgeList()) {
             if (v.getColor() == 'w') {
                 dfsTree.addEdge(vertex.getNumber(), v.getNumber());
@@ -52,24 +52,20 @@ public class Dfs {
         vertex.setColor('b');
         time++;
         vertex.setTimeOut(time);
-        vertexTimeList.add(vertex);
+        timeOutList.add(vertex);
     }
 
     public String toString() {
         time = 0;
-        return "Przebieg przeszukiwania w głąb:\n" +
-                vertexTimeList.stream().map(this::printVertexInformation).collect(Collectors.joining("\n"))
-                + "\n\n" + printCycleInformation() + "\n\nLas przeszukiwania w głąb: " + dfsTree.toString()
-                + "\nPrzeszukwany graf:\n" + graph.toString();
+        return "Przebieg przeszukiwania w głąb.\n\nKolejność wierzchołków według czasu wejścia:\n" +
+                printVertexInformation(timeInList) + "\n\nKolejność wierzchołków według czasu wyjścia\n" +
+                printVertexInformation(timeOutList) + "\n\n" + printCycleInformation() +
+                "\n\nLas przeszukiwania w głąb: " + dfsTree.toString()
+                + "\n\nPrzeszukwany graf:\n" + graph.toString();
     }
 
-    private String printVertexInformation(Vertex vertex) {
-        time++;
-        if (vertex.getTimeIn() == time) {
-            return "Odwiedzam wierzchołek numer " + vertex.getNumber();
-        }
-
-        return "Wychodze z wierzchołka numer " + vertex.getNumber();
+    private String printVertexInformation(List<Vertex> vertexList) {
+        return vertexList.stream().map(v -> v.getNumber().toString()).collect(Collectors.joining(" -> "));
     }
 
     private String printCycleInformation() {
