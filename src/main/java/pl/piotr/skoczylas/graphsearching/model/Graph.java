@@ -54,36 +54,58 @@ public class Graph {
         return vertexList.get(number - 1);
     }
 
-    public boolean addEdge(Vertex v1, Vertex v2) {
+    public int addEdge(Vertex v1, Vertex v2) {
         if (!v1.createConnection(v2)) {
-            return false;
+            return -1;
         }
 
         if (!getDirected()) {
             v2.createConnection(v1);
         }
 
-        return true;
+        return 1;
     }
 
-    public boolean addEdge(int v1, int v2) {
+    public int addEdge(int v1, int v2) {
+        if (!checkInputData(v1, v2)) {
+            return 0;
+        }
         return addEdge(vertexList.get(v1 - 1), vertexList.get(v2 - 1));
     }
 
-    public boolean removeEdge(Vertex v1, Vertex v2) {
+    public int removeEdge(Vertex v1, Vertex v2) {
         if (!v1.removeConnection(v2)) {
-            return false;
+            return -1;
         }
 
         if (!getDirected()) {
             v2.removeConnection(v1);
         }
 
+        return 1;
+    }
+
+    public int removeEdge(int v1, int v2) {
+        if (!checkInputData(v1, v2)) {
+            return 0;
+        }
+        return removeEdge(vertexList.get(v1 - 1), vertexList.get(v2 - 1));
+    }
+
+    private boolean checkInputData(int v1, int v2) {
+        if (v1 > vertexList.size() || v2 > vertexList.size() || v1 < 1 || v2 < 1) {
+            return false;
+        }
+
         return true;
     }
 
-    public boolean removeEdge(int v1, int v2) {
-        return removeEdge(vertexList.get(v1 - 1), vertexList.get(v2 - 1));
+    public boolean checkVertexCorrectness(int v) {
+        if (v > vertexList.size() || v < 1) {
+            return false;
+        }
+
+        return true;
     }
 
     public void printGraph() {

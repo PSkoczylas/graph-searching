@@ -43,28 +43,52 @@ public class MainController {
     void addEdge(ActionEvent event) {
         String showText;
         try {
-            graph.addEdge(Integer.parseInt(vertexForEdge1.getText()),
+            int result = graph.addEdge(Integer.parseInt(vertexForEdge1.getText()),
                     Integer.parseInt(vertexForEdge2.getText()));
-            showText = "Poprawnie wprowadzono krawędź.\nStan grafu:\n";
+            if (result == 1) {
+                showText = "Poprawnie wprowadzono krawędź\nStan grafu:\n";
+            } else {
+                if (result == -1) {
+                    showText = "Taka krawędź już istnieje.\nStan grafu:\n";
+                } else {
+                    showText = "Nie można utworzyć krawędzi, ponieważ podany wierzchołek nie istnieje\nStan grafu:\n";
+                }
+            }
         } catch(Exception e) {
             showText = "Wprowadzono niepoprawne dane\n";
         }
 
-        showGraphText.setText(showText + graph.toString());
+        if (graph != null) {
+            showGraphText.setText(showText + graph.toString());
+        } else {
+            showGraphText.setText("Najpierw wprowadź ilość wierzchołków grafu\n");
+        }
     }
 
     @FXML
     void removeEdge(ActionEvent event) {
         String showText;
         try {
-            graph.removeEdge(Integer.parseInt(vertexForEdge1.getText()),
+            int result = graph.removeEdge(Integer.parseInt(vertexForEdge1.getText()),
                     Integer.parseInt(vertexForEdge2.getText()));
-            showText = "Poprawnie usunięto krawędź.\nStan grafu:\n";
+            if (result == 1) {
+                showText = "Poprawnie usunięto krawędź\nStan grafu:\n";
+            } else {
+                if (result == -1) {
+                    showText = "Podana krawędź nie istnieje.\nStan grafu:\n";
+                } else {
+                    showText = "Podana krawędź nie istnieje. Podano niepoprawny numer wierzchołka.\nStan grafu\n";
+                }
+            }
         } catch(Exception e) {
             showText = "Wprowadzono niepoprawne dane\n";
         }
 
-        showGraphText.setText(showText + graph.toString());
+        if (graph != null) {
+            showGraphText.setText(showText + graph.toString());
+        } else {
+            showGraphText.setText("Najpierw wprowadź graf\n");
+        }
     }
 
     @FXML
@@ -96,10 +120,19 @@ public class MainController {
     void runBfs(ActionEvent event) {
         try {
             Bfs bfs = new Bfs();
-            bfs.searchGraph(graph, graph.getVertex(Integer.parseInt(bfsBeginVertex.getText())));
-            showGraphText.setText(bfs.toString());
+            int beginVertexNumber = Integer.parseInt(bfsBeginVertex.getText());
+            if (!graph.checkVertexCorrectness(beginVertexNumber)) {
+                showGraphText.setText("Wprowadzono niepoprawny numer wierzchołka startowego\n");
+            } else {
+                bfs.searchGraph(graph, graph.getVertex(beginVertexNumber));
+                showGraphText.setText(bfs.toString());
+            }
         } catch (Exception e) {
-            showGraphText.setText("Najpierw wprowadź graf i poprawny wierzchołek startowy\n");
+            if (graph == null) {
+                showGraphText.setText("Najpierw wprowadź graf\n");
+            } else {
+                showGraphText.setText("Najpierw wprowadź graf i poprawny wierzchołek startowy\n");
+            }
         }
     }
 
@@ -111,7 +144,7 @@ public class MainController {
                 showGraphText.setText(topologicalSort.toString());
             } else {
                 showGraphText.setText("Graf nie może być posortowany topologicznie." +
-                        "Musi być skierowanym grafem acyklicznym");
+                        "Musi być skierowanym grafem acyklicznym\nStan grafu:\n" + graph.toString());
             }
         } catch (Exception e) {
             showGraphText.setText("Najpierw wprowadź graf\n");
@@ -129,7 +162,7 @@ public class MainController {
             Stage stage = (Stage) mainWindow.getScene().getWindow();
             ReadFromFile readFromFile = new ReadFromFile();
             graph = readFromFile.getGraphFromFile(fileChooser.showOpenDialog(stage));
-            showGraphText.setText("Poprawnie wczytano graf z pliku\nStan grafu:\n" + graph.toString());
+            showGraphText.setText("Poprawnie wczytano graf z pliku\nGraf został utworzony\nStan grafu:\n" + graph.toString());
         } catch(Exception e) {
             showGraphText.setText("Nie wczytano pliku lub format jest niepoprawny\n");
         }

@@ -60,7 +60,7 @@ public class Dfs {
         return "Przebieg przeszukiwania w głąb.\n\nKolejność wierzchołków według czasu wejścia:\n" +
                 printVertexInformation(timeInList) + "\n\nKolejność wierzchołków według czasu wyjścia\n" +
                 printVertexInformation(timeOutList) + "\n\n" + printCycleInformation() +
-                "\n\nLas przeszukiwania w głąb: " + dfsTree.toString()
+                "\n\nLas przeszukiwania w głąb:\n" + dfsTree.toString()
                 + "\n\nPrzeszukwany graf:\n" + graph.toString();
     }
 

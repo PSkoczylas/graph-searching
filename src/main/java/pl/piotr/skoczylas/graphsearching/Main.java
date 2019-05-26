@@ -12,12 +12,6 @@ public class Main {
     public static void main(String[] args) {
         MainView mainPage = new MainView();
         mainPage.startApplication();
-        //MainView.starter();
-        //ReadFromFile readFromFile = new ReadFromFile();
-        //Graph g = readFromFile.getGraphFromFile();
-        //System.out.println(g);
-        //dfs();
-        //MainView beginElement = new MainView();
     }
 
     public static void checkGraph() {
