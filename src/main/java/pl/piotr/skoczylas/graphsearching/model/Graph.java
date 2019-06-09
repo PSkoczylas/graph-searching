@@ -66,11 +66,11 @@ public class Graph {
         return 1;
     }
 
-    public int addEdge(int v1, int v2) {
-        if (!checkInputData(v1, v2)) {
+    public int addEdge(int vNr1, int vNr2) {
+        if (!checkInputData(vNr1, vNr2)) {
             return 0;
         }
-        return addEdge(vertexList.get(v1 - 1), vertexList.get(v2 - 1));
+        return addEdge(vertexList.get(vNr1 - 1), vertexList.get(vNr2 - 1));
     }
 
     public int removeEdge(Vertex v1, Vertex v2) {
@@ -118,6 +118,12 @@ public class Graph {
 
     @Override
     public String toString() {
-        return vertexList.stream().map(Vertex::toString).collect(Collectors.joining("\n"));
+        String directedText;
+        if (directed == true) {
+            directedText = "Graf skierowany\n";
+        } else {
+            directedText = "Graf nieskierowany\n";
+        }
+        return directedText + vertexList.stream().map(Vertex::toString).collect(Collectors.joining("\n"));
     }
 }

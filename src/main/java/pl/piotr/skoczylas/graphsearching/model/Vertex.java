@@ -15,7 +15,6 @@ public class Vertex {
     private Integer number;
     private int timeIn;
     private int timeOut;
-    private boolean visited;
     private char color;
 
     public Vertex(int number, List<Vertex> edgeList) {
@@ -23,7 +22,6 @@ public class Vertex {
         this.edgeList = createEdgeList(edgeList);
         this.edgeSet = createEdgeSet();
         this.edgeSet = new HashSet<>();
-        this.visited = false;
         this.timeIn = this.timeOut = -1;
         this.color = 'w';
         this.distance = Integer.MAX_VALUE;

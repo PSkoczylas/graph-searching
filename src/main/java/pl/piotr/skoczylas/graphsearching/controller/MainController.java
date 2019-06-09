@@ -14,6 +14,8 @@ import javafx.scene.text.Text;
 import pl.piotr.skoczylas.graphsearching.service.*;
 import pl.piotr.skoczylas.graphsearching.view.MainView;
 
+import java.io.File;
+
 public class MainController {
     private Graph graph;
     private Integer vertexNumber;
@@ -39,6 +41,8 @@ public class MainController {
     @FXML
     private TextField bfsBeginVertex;
 
+    private File currentFile;
+
     @FXML
     void addEdge(ActionEvent event) {
         String showText;
@@ -46,7 +50,7 @@ public class MainController {
             int result = graph.addEdge(Integer.parseInt(vertexForEdge1.getText()),
                     Integer.parseInt(vertexForEdge2.getText()));
             if (result == 1) {
-                showText = "Poprawnie wprowadzono krawędź\nStan grafu:\n";
+                showText = "Poprawnie wprowadzono krawędź\n\nStan grafu:\n";
             } else {
                 if (result == -1) {
                     showText = "Taka krawędź już istnieje.\nStan grafu:\n";
@@ -61,7 +65,7 @@ public class MainController {
         if (graph != null) {
             showGraphText.setText(showText + graph.toString());
         } else {
-            showGraphText.setText("Najpierw wprowadź ilość wierzchołków grafu\n");
+            showGraphText.setText("Najpierw wprowadź graf\nWczytaj graf z pliku lub z klawiatury.\n");
         }
     }
 
@@ -72,7 +76,7 @@ public class MainController {
             int result = graph.removeEdge(Integer.parseInt(vertexForEdge1.getText()),
                     Integer.parseInt(vertexForEdge2.getText()));
             if (result == 1) {
-                showText = "Poprawnie usunięto krawędź\nStan grafu:\n";
+                showText = "Poprawnie usunięto krawędź\n\nStan grafu:\n";
             } else {
                 if (result == -1) {
                     showText = "Podana krawędź nie istnieje.\nStan grafu:\n";
@@ -87,7 +91,7 @@ public class MainController {
         if (graph != null) {
             showGraphText.setText(showText + graph.toString());
         } else {
-            showGraphText.setText("Najpierw wprowadź graf\n");
+            showGraphText.setText("Najpierw wprowadź graf\nWczytaj graf z pliku lub z klawiatury.\n\n ");
         }
     }
 
@@ -97,7 +101,8 @@ public class MainController {
         try {
             vertexNumber = Integer.parseInt(vertexNumberGetter.getText());
             graph = new Graph(vertexNumber, isDirected.isSelected());
-            showText = "Poprawnie wprowadzono ilość wierzchołków.\nStan grafu:\n";
+            currentFile = null;
+            showText = "Poprawnie wprowadzono ilość wierzchołków.\n\nStan grafu:\n";
             showGraphText.setText(showText + graph.toString());
         } catch(Exception e) {
             showText = "Wprowadzono niepoprawne dane\n";
@@ -110,7 +115,10 @@ public class MainController {
         try {
             Dfs dfs = new Dfs();
             dfs.searchGraph(graph);
-            showGraphText.setText(dfs.toString());
+            String result = dfs.toString();
+            showGraphText.setText(result);
+            //showGraphText.setText(dfs.toString());
+            System.out.println(result);
         } catch (Exception e) {
             showGraphText.setText("Najpierw wprowadź graf\n");
         }
@@ -122,10 +130,14 @@ public class MainController {
             Bfs bfs = new Bfs();
             int beginVertexNumber = Integer.parseInt(bfsBeginVertex.getText());
             if (!graph.checkVertexCorrectness(beginVertexNumber)) {
-                showGraphText.setText("Wprowadzono niepoprawny numer wierzchołka startowego\n");
+                showGraphText.setText("Wprowadzono niepoprawny numer wierzchołka startowego\n\nStan grafu:\n" +
+                        graph.toString());
             } else {
                 bfs.searchGraph(graph, graph.getVertex(beginVertexNumber));
-                showGraphText.setText(bfs.toString());
+                //showGraphText.setText(bfs.toString());
+                String result = bfs.toString();
+                showGraphText.setText(result);
+                System.out.println(result);
             }
         } catch (Exception e) {
             if (graph == null) {
@@ -141,10 +153,12 @@ public class MainController {
         try {
             TopologicalSort topologicalSort = new TopologicalSort();
             if (topologicalSort.getTopologicalList(graph) != null) {
-                showGraphText.setText(topologicalSort.toString());
+                String result = topologicalSort.toString();
+                showGraphText.setText(result);
+                System.out.println(result);
             } else {
-                showGraphText.setText("Graf nie może być posortowany topologicznie." +
-                        "Musi być skierowanym grafem acyklicznym\nStan grafu:\n" + graph.toString());
+                showGraphText.setText("Graf nie może być posortowany topologicznie. " +
+                        "Musi być skierowanym grafem acyklicznym\n\nStan grafu:\n" + graph.toString());
             }
         } catch (Exception e) {
             showGraphText.setText("Najpierw wprowadź graf\n");
@@ -161,8 +175,9 @@ public class MainController {
             fileChooser.setTitle("Wybierz plik z grafem");
             Stage stage = (Stage) mainWindow.getScene().getWindow();
             ReadFromFile readFromFile = new ReadFromFile();
-            graph = readFromFile.getGraphFromFile(fileChooser.showOpenDialog(stage));
-            showGraphText.setText("Poprawnie wczytano graf z pliku\nGraf został utworzony\nStan grafu:\n" + graph.toString());
+            currentFile = fileChooser.showOpenDialog(stage);
+            graph = readFromFile.getGraphFromFile(currentFile);
+            showGraphText.setText("Poprawnie wczytano graf z pliku\nGraf został utworzony\n\nStan grafu:\n" + graph.toString());
         } catch(Exception e) {
             showGraphText.setText("Nie wczytano pliku lub format jest niepoprawny\n");
         }
@@ -170,18 +185,24 @@ public class MainController {
 
     @FXML
     void saveGraphToFile(ActionEvent event) {
+        Graph copy = graph;
         try {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Wybierz plik do zapisania grafu");
-            Stage stage = (Stage) mainWindow.getScene().getWindow();
+            File file = currentFile;
+            if (currentFile == null) {
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Wybierz plik do zapisania grafu");
+                Stage stage = (Stage) mainWindow.getScene().getWindow();
+                file = fileChooser.showOpenDialog(stage);
+            }
             WriteToFile writeToFile = new WriteToFile();
-            writeToFile.saveGraphToFile(fileChooser.showOpenDialog(stage), graph);
-            showGraphText.setText("Poprawnie zapisano graf do pliku\nStan grafu:\n" + graph.toString());
+            writeToFile.saveGraphToFile(file, graph);
+            currentFile = file;
+            showGraphText.setText("Poprawnie zapisano graf do pliku\n\nStan grafu:\n" + graph.toString());
         } catch(Exception e) {
             if (graph == null) {
                 showGraphText.setText("Nie wprowadzono grafu\n");
             } else {
-                showGraphText.setText("Nie wczytano pliku lub format jest niepoprawny\n");
+                showGraphText.setText("Nie zapisano pliku lub format jest niepoprawny\n");
             }
         }
     }
